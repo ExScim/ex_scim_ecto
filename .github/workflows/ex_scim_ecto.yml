@@ -8,14 +8,8 @@ name: ExScim Ecto CI
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'ex_scim_ecto/**'
-      - '.github/workflows/ex_scim_ecto.yml'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'ex_scim_ecto/**'
-      - '.github/workflows/ex_scim_ecto.yml'
 
 permissions:
   contents: read
@@ -38,20 +32,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ex_scim_ecto/deps
-            ex_scim_ecto/_build
-          key: ${{ runner.os }}-mix-ex_scim_ecto-${{ hashFiles('ex_scim_ecto/mix.lock') }}
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            ${{ runner.os }}-mix-ex_scim_ecto-
-    
+            ${{ runner.os }}-mix-
+
       - name: Install dependencies
-        working-directory: ex_scim_ecto
         run: mix deps.get
-    
+
       - name: Compile project
-        working-directory: ex_scim_ecto
         run: MIX_ENV=test mix compile --warnings-as-errors
-    
+
       - name: Run tests
-        working-directory: ex_scim_ecto
         run: mix test
