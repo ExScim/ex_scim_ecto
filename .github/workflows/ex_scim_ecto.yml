@@ -21,13 +21,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-    
+
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
           elixir-version: '1.18.2'
           otp-version: '27.0'
-    
+
       - name: Restore dependencies cache
         uses: actions/cache@v4
         with:
@@ -40,6 +40,8 @@ jobs:
 
       - name: Install dependencies
         run: mix deps.get
+        env:
+          MIX_ENV: test
 
       - name: Compile project
         run: MIX_ENV=test mix compile --warnings-as-errors
